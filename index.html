@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <foodd>台灣人檢定（Taiwan Exam）</foodd>
+    <style>
+        body {
+            background: #000;
+        }
+
+        #bigfoodd {
+            color: #FFF;
+            text-align: center;
+            font-size: 80px;
+            font-weight: bolder;
+            width: 100%;
+            height: 100px;
+            line-height: 250px;
+        }
+
+        .foodd {
+            color: #FFF;
+            text-align: center;
+            width: 100%;
+            height: 100px;
+            line-height: 100px;
+            font-size: 40px;
+            font-weight: bolder;
+        }
+
+        /* div {
+            text-align: center;
+            width: 100%;
+            height: auto;
+        } */
+
+        .card {
+            width: 200px;
+            height: 200px;
+            position: relative;
+            float: left;
+            transform-style: preserve-3d;
+            transition: 0.5s;
+
+        }
+
+        #c-food,
+        #c-drinks,
+        #c-cup,
+        #c-bowl {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .c-back {
+            width: 110%;
+            height: 110%;
+            background-image: url(./cards/Taiwan_back.jpg);
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            position: absolute;
+            /* 翻過來後隱藏背面 ，為mac ios系統而加，正常windows不影響*/
+            backface-visibility: hidden;
+            -web-backface-visibility: hidden;
+        }
+
+        .c-front {
+            width: 100%;
+            height: 100%;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            position: relative;
+            transform: rotateY(180deg);
+        }
+
+        .card-open {
+            transform: rotateY(180deg);
+        }
+
+        .card-green {
+            transform: scale(0.5) rotateY(180deg);
+            box-shadow: chartreuse 0 0 80px;
+        }
+
+        .card-red {
+            transform: scale(0.5) rotateY(180deg);
+            box-shadow: red 0 0 80px;
+        }
+
+        .card-yellow {
+            transform: scale(0.5) rotateY(180deg);
+            box-shadow: yellow 0 0 80px;
+        }
+        /* coptright */
+		.cc{
+            position: relative;
+            top: 200px;
+            color: #FFF;
+		}
+    </style>
+</head>
+
+<body>
+    <script src="./jquery-3.6.0.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <div id="bigfoodd">台灣人檢定（Taiwan Exam）</div>
+    <br /><br /><br /><br /><br /><br />
+    <div id="t-food" class="foodd">飲食（Foods）</div><br />
+    <div id="c-food"></div><br />
+    <div id="t-drinks" class="foodd">飲品（Drinks）</div><br />
+    <div id="c-drinks"></div><br />
+    <div id="t-cup" class="foodd">杯子（Cup）</div><br />
+    <div id="c-cup"></div><br />
+    <div id="t-bowl" class="foodd">碗（Bowl）</div><br />
+    <div id="c-bowl"></div><br />
+    <!-- copyright -->
+    <p class="cc"style="text-align: center;">&copy; Made with 🤯&💛 by Shuanglagan</p>
+
+
+
+
+    <script>
+        const data = [
+            { food: '1-1_bando', drinks: '1-2_juice', cup: '1-3_glassCup', bowl: '1-4_pinkBowl' },
+            { food: '2-1_steak', drinks: '2-2_juice_machine', cup: '2-3_cup', bowl: '2-4_soup' },
+            { food: '3-1_buffe', drinks: '3-2_container', cup: '3-3_paperCup', bowl: '3-4_paperBowl' }
+        ]
+
+
+        for (let i = 0; i < data.length; i++) {
+            $('#c-food').append(`
+            <div class="card">
+                 <div class="c-back"></div>
+                 <div class="c-front"></div>
+             </div>
+            `)
+            $('#c-drinks').append(`
+            <div class="card">
+                 <div class="c-back"></div>
+                 <div class="c-front"></div>
+             </div>
+            `)
+            $('#c-cup').append(`
+            <div class="card">
+                 <div class="c-back"></div>
+                 <div class="c-front"></div>
+             </div>
+            `)
+            $('#c-bowl').append(`
+            <div class="card">
+                 <div class="c-back"></div>
+                 <div class="c-front"></div>
+             </div>
+            `)
+        }
+
+        for (let i = 0; i < data.length; i++) {
+            $('#c-food .card').eq(i).find('.c-front').css('background-image', `url(./cards/${data[i].food}.jpg)`)
+            $('#c-drinks .card').eq(i).find('.c-front').css('background-image', `url(./cards/${data[i].drinks}.jpg)`)
+            $('#c-cup .card').eq(i).find('.c-front').css('background-image', `url(./cards/${data[i].cup}.jpg)`)
+            $('#c-bowl .card').eq(i).find('.c-front').css('background-image', `url(./cards/${data[i].bowl}.jpg)`)
+
+            $('#c-food .card').eq(i).attr('data-part', data[i].food)
+            $('#c-drinks .card').eq(i).attr('data-part', data[i].food)
+            $('#c-cup .card').eq(i).attr('data-part', data[i].food)
+            $('#c-bowl .card').eq(i).attr('data-part', data[i].food)
+
+            let targetA = Math.floor(Math.random() * data.length)
+            let targetB = Math.floor(Math.random() * data.length)
+            let targetC = Math.floor(Math.random() * data.length)
+            let targetD = Math.floor(Math.random() * data.length)
+            $('#c-food .card').eq(targetA).insertAfter($('#c-food .card').eq(i))
+            $('#c-drinks .card').eq(targetB).insertAfter($('#c-drinks .card').eq(i))
+            $('#c-cup .card').eq(targetC).insertAfter($('#c-cup .card').eq(i))
+            $('#c-bowl .card').eq(targetD).insertAfter($('#c-bowl .card').eq(i))
+        }
+
+
+        $('#c-food,#c-drinks,#c-cup,#c-bowl').on('click', '.card', function () {
+
+            //第一組
+            if (!$(this).hasClass('card-open')) {
+                if ($('.card-open').length == 0) {
+                    $(this).addClass('card-open')
+                }
+
+                else if ($('.card-open').length == 1 &&
+                    $(this).parent().attr('id') != $('.card-open').eq(0).parent().attr('id')
+                ) {
+                    $(this).addClass('card-open')
+                }
+
+                else if ($('.card-open').length == 2 &&
+                    $(this).parent().attr('id') != $('.card-open').eq(0).parent().attr('id') &&
+                    $(this).parent().attr('id') != $('.card-open').eq(1).parent().attr('id')
+                ) {
+                    $(this).addClass('card-open')
+                }
+
+                else if ($('.card-open').length == 3 &&
+                    $(this).parent().attr('id') != $('.card-open').eq(0).parent().attr('id') &&
+                    $(this).parent().attr('id') != $('.card-open').eq(1).parent().attr('id') &&
+                    $(this).parent().attr('id') != $('.card-open').eq(2).parent().attr('id')
+                ) {
+                    $(this).addClass('card-open')
+                }
+
+                // else if ($('.card-open').length == 4 &&
+                //     $(this).parent().attr('id') != $('.card-open').eq(0).parent().attr('id') &&
+                //     $(this).parent().attr('id') != $('.card-open').eq(1).parent().attr('id') &&
+                //     $(this).parent().attr('id') != $('.card-open').eq(2).parent().attr('id') &&
+                //     $(this).parent().attr('id') != $('.card-open').eq(3).parent().attr('id')
+                // ) {
+                //     $(this).addClass('card-open')
+                // }
+
+                //***********************************************
+
+                else if ($('.card-open').length == 4) {
+                    $(this).addClass('card-open')
+                }
+                
+                else if ($('.card-open').length == 5 &&
+                    $(this).parent().attr('id') != $('.card-open:not(.card-green)').eq(0).parent().attr('id')
+                ) {
+                    $(this).addClass('card-open')
+                }
+
+                else if ($('.card-open').length == 6 &&
+                    $(this).parent().attr('id') != $('.card-open:not(.card-green)').eq(0).parent().attr('id') &&
+                    $(this).parent().attr('id') != $('.card-open:not(.card-green)').eq(1).parent().attr('id')
+                ) {
+                    $(this).addClass('card-open')
+                }
+
+                else if ($('.card-open').length == 7 &&
+                    $(this).parent().attr('id') != $('.card-open:not(.card-green)').eq(0).parent().attr('id') &&
+                    $(this).parent().attr('id') != $('.card-open:not(.card-green)').eq(1).parent().attr('id') &&
+                    $(this).parent().attr('id') != $('.card-open:not(.card-green)').eq(2).parent().attr('id')
+                ) {
+                    $(this).addClass('card-open')
+                }
+
+
+                //***********************************************
+
+                else if ($('.card-open').length == 8) {
+                    $(this).addClass('card-open')
+                }
+
+                else if ($('.card-open').length == 9) {
+                    $(this).addClass('card-open')
+                }
+
+                else if ($('.card-open').length == 10) {
+                    $(this).addClass('card-open')
+                }
+
+                else if ($('.card-open').length == 11) {
+                    $(this).addClass('card-open')
+                }
+
+
+                //***********************************
+                
+            }
+            if ($('.card-open').length == 4) {
+                if (
+                    $('.card-open').eq(0).attr('data-part') == $('.card-open').eq(1).attr('data-part') &&
+                    $('.card-open').eq(1).attr('data-part') == $('.card-open').eq(2).attr('data-part') &&
+                    $('.card-open').eq(2).attr('data-part') == $('.card-open').eq(3).attr('data-part')) {
+                    $('.card-open').addClass('card-green')
+                    $('.card-open').addClass('card-correct')
+                }
+                else {
+
+                    setTimeout(() => {
+                        $('.card-open').removeClass('card-open')
+                    }, 1000);
+                }
+            }
+
+            if ($('.card-open').length == 8) {
+                if (
+                    $('.card-open:not(.card-green)').eq(0).attr('data-part') == $('.card-open:not(.card-green)').eq(1).attr('data-part') &&
+                    $('.card-open:not(.card-green)').eq(1).attr('data-part') == $('.card-open:not(.card-green)').eq(2).attr('data-part') &&
+                    $('.card-open:not(.card-green)').eq(2).attr('data-part') == $('.card-open:not(.card-green)').eq(3).attr('data-part')) {
+                    $('.card-open:not(.card-green)').addClass('card-red')
+                    $('.card-open:not(.card-green)').addClass('card-correct')
+                }
+                else {
+
+                    setTimeout(() => {
+                        $('.card-open:not(.card-green)').removeClass('card-open')
+                    }, 1000);
+                }
+            }
+
+            if ($('.card-open').length == 12) {
+                 
+                    $('.card-open:not(card-correct)').addClass('card-yellow')
+                
+               
+
+                    setTimeout(() => {
+
+                        Swal.fire({
+                        icon: 'success',
+                        foodd:'恭喜',
+                        text:'你是台灣人'
+                                })
+                    }, 1000);
+                
+            }
+
+
+
+
+
+
+        })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        //重複寫法 不知問題在哪
+        //可以隨意點
+
+
+        // $('#c-food,#c-drinks,#c-cup,#c-bowl').on('click', '.card', function () {
+
+
+        //     for (let j = 0; j < 12; j += 0) {
+
+
+        //         if (!$(this).hasClass('card-open')) {
+        //             if ($('.card-open').length == 0) {
+        //                 $(this).addClass('card-open')
+        //             }
+
+        //             else if ($('.card-open').length == (j + 1) &&
+        //                 $(this).parent().attr('id') != $('.card-open').eq(j + 0).parent().attr('id')
+        //             ) {
+        //                 $(this).addClass('card-open')
+        //             }
+
+        //             else if ($('.card-open').length == (j + 2) &&
+        //                 $(this).parent().attr('id') != $('.card-open').eq(j + 0).parent().attr('id') &&
+        //                 $(this).parent().attr('id') != $('.card-open').eq(j + 1).parent().attr('id')
+        //             ) {
+        //                 $(this).addClass('card-open')
+        //             }
+
+        //             else if ($('.card-open').length == (j + 3) &&
+        //                 $(this).parent().attr('id') != $('.card-open').eq(j + 0).parent().attr('id') &&
+        //                 $(this).parent().attr('id') != $('.card-open').eq(j + 1).parent().attr('id') &&
+        //                 $(this).parent().attr('id') != $('.card-open').eq(j + 2).parent().attr('id')
+        //             ) {
+        //                 $(this).addClass('card-open')
+        //             }
+
+        //             else if ($('.card-open').length == (j + 4) &&
+        //                 $(this).parent().attr('id') != $('.card-open').eq(j + 0).parent().attr('id') &&
+        //                 $(this).parent().attr('id') != $('.card-open').eq(j + 1).parent().attr('id') &&
+        //                 $(this).parent().attr('id') != $('.card-open').eq(j + 2).parent().attr('id') &&
+        //                 $(this).parent().attr('id') != $('.card-open').eq(j + 3).parent().attr('id')
+        //             ) {
+        //                 $(this).addClass('card-open')
+        //             }
+        //         }
+        //         if ($('.card-open').length === (j + 4)) {
+        //             if (
+        //                 $('.card-open').eq(j + 0).attr('data-part') == $('.card-open').eq(j + 1).attr('data-part') &&
+        //                 $('.card-open').eq(j + 1).attr('data-part') == $('.card-open').eq(j + 2).attr('data-part') &&
+        //                 $('.card-open').eq(j + 2).attr('data-part') == $('.card-open').eq(j + 3).attr('data-part')) {
+        //                 $('.card-open').addClass('card-highLighted')
+        //                 j += 4
+        //             }
+        //             else {
+
+        //                 setTimeout(() => {
+        //                     $('.card-open').removeClass('card-open')
+        //                 }, 2000);
+        //             }
+        //         }
+
+
+
+        //     }
+
+
+        // })
+
+
+
+
+
+
+
+
+        //照順序點擊
+
+        // $('#c-food').on('click', '.card', function () {
+        //     if (!$('#c-food .cards').hasClass('.card-open') && $('.card-open').length === 0) {
+        //         $(this).addClass('card-open')
+        //     }
+        // })
+        // $('#c-drinks').on('click', '.card', function () {
+        //     if (!$('#c-drinks .cards').hasClass('.card-open') && $('.card-open').length === 1) {
+        //         $(this).addClass('card-open')
+        //     }
+        // })
+        // $('#c-cup').on('click', '.card', function () {
+        //     if (!$('#c-cup .cards').hasClass('.card-open') && $('.card-open').length === 2) {
+        //         $(this).addClass('card-open')
+        //     }
+        // })
+        // $('#c-bowl').on('click', '.card', function () {
+        //     if (!$('#c-bowl .cards').hasClass('.card-open') && $('.card-open').length === 3) {
+        //         $(this).addClass('card-open')
+        //     }
+        //     if ($('.card-open').length === 4) {
+        //         if (
+        //             $('.card-open').eq(0).attr('data-part') == $('.card-open').eq(1).attr('data-part') &&
+        //             $('.card-open').eq(1).attr('data-part') == $('.card-open').eq(2).attr('data-part') &&
+        //             $('.card-open').eq(2).attr('data-part') == $('.card-open').eq(3).attr('data-part')) {
+        //             $('.card-open').addClass('card-highLighted')
+        //         }
+        //         else {
+
+        //             setTimeout(() => {
+        //                 $('.card-open').removeClass('card-open')
+        //             }, 1000);
+        //         }
+
+
+        //     }
+        // })
+
+
+
+
+
+
+        // if($('.card-open').length===4 && ( 
+        // $('.card-open').eq(0).attr('data-part')!==$('.card-open').eq(1).attr('data-part') || 
+        // $('.card-open').eq(0).attr('data-part')!==$('.card-open').eq(2).attr('data-part') || 
+        // $('.card-open').eq(0).attr('data-part')!==$('.card-open').eq(3).attr('data-part') ||        
+        // $('.card-open').eq(1).attr('data-part')!==$('.card-open').eq(2).attr('data-part') || 
+        // $('.card-open').eq(1).attr('data-part')!==$('.card-open').eq(3).attr('data-part') ||        
+        // $('.card-open').eq(2).attr('data-part')!==$('.card-open').eq(3).attr('data-part') 
+
+        // )){
+        //     setTimeout(() => {
+        //   $('.card-open').removeClass('card-open')
+        // }, 1000);
+        // }
+
+        // if($('.card-open').length===4 && !( 
+        // $('.card-open').eq(0).attr('data-part')==$('.card-open').eq(1).attr('data-part') && 
+        // $('.card-open').eq(1).attr('data-part')==$('.card-open').eq(2).attr('data-part') && 
+        // $('.card-open').eq(2).attr('data-part')==$('.card-open').eq(3).attr('data-part') 
+
+        // )){
+        //     setTimeout(() => {
+        //   $('.card-open').removeClass('card-open')
+        // }, 1000);
+        // }
+
+
+
+
+        // const reset = (){
+
+        // }
+
+
+
+
+
+
+
+
+    </script>
+
+
+</body>
+
+</html>
